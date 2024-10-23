@@ -1,11 +1,10 @@
-// server.js (Your Socket.IO server on Render)
-import express from "express";
-import http from "http";
-import { Server as SocketIOServer } from "socket.io";
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = new SocketIOServer(server);
+const io = new Server(server);
 
 app.use(express.json()); // For parsing application/json
 
