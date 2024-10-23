@@ -1,12 +1,29 @@
-require('dotenv').config(); // Add this line at the top of your server.js
+require('dotenv').config(); // Load environment variables from .env
 
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors'); // Import cors middleware
 
 const app = express();
+
+// Use cors middleware for handling cross-origin requests (use your frontend domain)
+app.use(cors({
+  origin: "https://stock-paddy.vercel.app", // Allow requests from your Vercel frontend
+  methods: ["GET", "POST"], // Specify allowed HTTP methods
+  credentials: true // If you're handling cookies/auth, set this to true
+}));
+
 const server = http.createServer(app);
-const io = new Server(server);
+
+// Initialize Socket.IO with CORS support
+const io = new Server(server, {
+  cors: {
+    origin: "https://your-frontend-domain.com", // Your Vercel frontend URL
+    methods: ["GET", "POST"],
+    credentials: true // Ensure credentials are allowed (cookies, etc.)
+  }
+});
 
 // Handle socket connections
 io.on('connection', (socket) => {
